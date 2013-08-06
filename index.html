@@ -1,0 +1,198 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Envelopes &mdash; Envelopes 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Envelopes 0.1 documentation" href="#" />
+    <link rel="next" title="Envelopes in Celery example" href="examples/celery.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="examples/celery.html" title="Envelopes in Celery example"
+             accesskey="N">next</a> |</li>
+        <li><a href="#">Envelopes 0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="envelopes">
+<h1>Envelopes<a class="headerlink" href="#envelopes" title="Permalink to this headline">¶</a></h1>
+<p>Mailing for human beings.</p>
+<div class="section" id="about">
+<h2>About<a class="headerlink" href="#about" title="Permalink to this headline">¶</a></h2>
+<p>Envelopes is a wrapper for Python&#8217;s <em>email</em> and <em>smtplib</em> modules. It aims to
+make working with outgoing e-mail in Python simple and fun.</p>
+</div>
+<div class="section" id="short-example">
+<h2>Short example<a class="headerlink" href="#short-example" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">envelopes</span> <span class="kn">import</span> <span class="n">Envelope</span>
+
+<span class="n">envelope</span> <span class="o">=</span> <span class="n">Envelope</span><span class="p">(</span>
+    <span class="n">from_addr</span><span class="o">=</span><span class="s">u&#39;from@example.com&#39;</span><span class="p">,</span>
+    <span class="n">from_name</span><span class="o">=</span><span class="s">u&#39;From Example&#39;</span><span class="p">,</span>
+    <span class="n">to_addr</span><span class="o">=</span><span class="s">u&#39;to@example.com&#39;</span><span class="p">,</span>
+    <span class="n">to_name</span><span class="o">=</span><span class="s">u&#39;To Example&#39;</span><span class="p">,</span>
+    <span class="n">subject</span><span class="o">=</span><span class="s">u&#39;Envelopes demo&#39;</span><span class="p">,</span>
+    <span class="n">text_body</span><span class="o">=</span><span class="s">u&quot;I&#39;m a helicopter!&quot;</span>
+<span class="p">)</span>
+<span class="n">envelope</span><span class="o">.</span><span class="n">add_attachment</span><span class="p">(</span><span class="s">&#39;/Users/bilbo/Pictures/helicopter.jpg&#39;</span><span class="p">)</span>
+<span class="n">envelope</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s">&#39;smtp.googlemail.com&#39;</span><span class="p">,</span> <span class="n">login</span><span class="o">=</span><span class="s">&#39;from@example.com&#39;</span><span class="p">,</span>
+              <span class="n">password</span><span class="o">=</span><span class="s">&#39;password&#39;</span><span class="p">,</span> <span class="n">tls</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="features">
+<h2>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h2>
+<p>Envelopes allows you to easily:</p>
+<ul class="simple">
+<li>Provide e-mail addresses with or without name part.</li>
+<li>Set text, HTML or both bodies according to your needs.</li>
+<li>Provide any number of CC and BCC addresses.</li>
+<li>Set standard (e.g. <tt class="docutils literal"><span class="pre">Reply-To</span></tt>) and custom (e.g. <tt class="docutils literal"><span class="pre">X-Mailer</span></tt>) headers.</li>
+<li>Attach files of any kind without hassle.</li>
+<li>Use any charset natively supported by Python&#8217;s <em>unicode</em> type in addresses,
+bodies, headers and attachment file names.</li>
+</ul>
+</div>
+<div class="section" id="more-examples">
+<h2>More examples<a class="headerlink" href="#more-examples" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="examples/celery.html">Envelopes in Celery example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/flask.html">Envelopes in Flask example</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="project-status">
+<h2>Project status<a class="headerlink" href="#project-status" title="Permalink to this headline">¶</a></h2>
+<p>This is the first public release of the code. It was extracted from a few minor
+production apps.</p>
+<p>Envelopes has been developed and tested with Python 2.7. Tests for other
+versions will follow shortly after the release.</p>
+</div>
+<div class="section" id="author">
+<h2>Author<a class="headerlink" href="#author" title="Permalink to this headline">¶</a></h2>
+<p>Envelopes is developed by <a class="reference external" href="http://www.bthlabs.pl/">Tomasz Wójcik</a>.</p>
+</div>
+<div class="section" id="license">
+<h2>License<a class="headerlink" href="#license" title="Permalink to this headline">¶</a></h2>
+<p>Envelopes is licensed under the MIT License.</p>
+</div>
+<div class="section" id="source-code-and-issues">
+<h2>Source code and issues<a class="headerlink" href="#source-code-and-issues" title="Permalink to this headline">¶</a></h2>
+<p>Source code is available on GitHub at:
+<a class="reference external" href="https://github.com/tomekwojcik/envelopes">tomekwojcik/envelopes</a>.</p>
+<p>To file issue reports and feature requests use the project&#8217;s issue tracker on
+GitHub.</p>
+</div>
+<div class="section" id="api-documentation">
+<h2>API Documentation<a class="headerlink" href="#api-documentation" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/envelope.html">Envelope class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/conn.html">SMTP connection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/connstack.html">Connection stack</a></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Envelopes</a><ul>
+<li><a class="reference internal" href="#about">About</a></li>
+<li><a class="reference internal" href="#short-example">Short example</a></li>
+<li><a class="reference internal" href="#features">Features</a></li>
+<li><a class="reference internal" href="#more-examples">More examples</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#project-status">Project status</a></li>
+<li><a class="reference internal" href="#author">Author</a></li>
+<li><a class="reference internal" href="#license">License</a></li>
+<li><a class="reference internal" href="#source-code-and-issues">Source code and issues</a></li>
+<li><a class="reference internal" href="#api-documentation">API Documentation</a><ul>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Next topic</h4>
+  <p class="topless"><a href="examples/celery.html"
+                        title="next chapter">Envelopes in Celery example</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/index.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="examples/celery.html" title="Envelopes in Celery example"
+             >next</a> |</li>
+        <li><a href="#">Envelopes 0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Tomasz Wójcik.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>

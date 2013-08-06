@@ -1,0 +1,129 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>SMTP connection &mdash; Envelopes 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Envelopes 0.1 documentation" href="../index.html" />
+    <link rel="next" title="Connection stack" href="connstack.html" />
+    <link rel="prev" title="Envelope class" href="envelope.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="connstack.html" title="Connection stack"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="envelope.html" title="Envelope class"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Envelopes 0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="smtp-connection">
+<h1>SMTP connection<a class="headerlink" href="#smtp-connection" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="envelopes.conn.SMTP">
+<em class="property">class </em><tt class="descclassname">envelopes.conn.</tt><tt class="descname">SMTP</tt><big>(</big><em>host</em>, <em>port=25</em>, <em>login=None</em>, <em>password=None</em>, <em>tls=False</em><big>)</big><a class="headerlink" href="#envelopes.conn.SMTP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper around <tt class="xref py py-class docutils literal"><span class="pre">smtplib.SMTP</span></tt> class.</p>
+<dl class="attribute">
+<dt id="envelopes.conn.SMTP.is_connected">
+<tt class="descname">is_connected</tt><a class="headerlink" href="#envelopes.conn.SMTP.is_connected" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns <em>True</em> if the SMTP connection is initialized and
+connected. Otherwise returns <em>False</em></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="envelopes.conn.SMTP.send">
+<tt class="descname">send</tt><big>(</big><em>envelope</em><big>)</big><a class="headerlink" href="#envelopes.conn.SMTP.send" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends an <em>envelope</em>.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="envelope.html"
+                        title="previous chapter">Envelope class</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="connstack.html"
+                        title="next chapter">Connection stack</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/api/conn.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="connstack.html" title="Connection stack"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="envelope.html" title="Envelope class"
+             >previous</a> |</li>
+        <li><a href="../index.html">Envelopes 0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Tomasz Wójcik.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Envelopes in Celery example &mdash; Envelopes 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Envelopes 0.1 documentation" href="../index.html" />
+    <link rel="next" title="Envelopes in Flask example" href="flask.html" />
+    <link rel="prev" title="Envelopes" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="flask.html" title="Envelopes in Flask example"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../index.html" title="Envelopes"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Envelopes 0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="envelopes-in-celery-example">
+<h1>Envelopes in Celery example<a class="headerlink" href="#envelopes-in-celery-example" title="Permalink to this headline">¶</a></h1>
+<p>The following code is an example of using Envelopes in Celery apps.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">celery</span> <span class="kn">import</span> <span class="n">Celery</span>
+<span class="kn">from</span> <span class="nn">envelopes</span> <span class="kn">import</span> <span class="n">Envelope</span>
+
+<span class="n">celery</span> <span class="o">=</span> <span class="n">Celery</span><span class="p">(</span><span class="s">&#39;envelopes_demo&#39;</span><span class="p">)</span>
+<span class="n">celery</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">BROKER_URL</span> <span class="o">=</span> <span class="s">&#39;amqp://guest@localhost//&#39;</span>
+
+
+<span class="nd">@celery.task</span>
+<span class="k">def</span> <span class="nf">send_envelope</span><span class="p">():</span>
+    <span class="n">envelope</span> <span class="o">=</span> <span class="n">Envelope</span><span class="p">(</span>
+        <span class="n">from_addr</span><span class="o">=</span><span class="s">&#39;</span><span class="si">%s</span><span class="s">@localhost&#39;</span> <span class="o">%</span> <span class="n">os</span><span class="o">.</span><span class="n">getlogin</span><span class="p">(),</span>
+        <span class="n">to_addr</span><span class="o">=</span><span class="s">&#39;</span><span class="si">%s</span><span class="s">@localhost&#39;</span> <span class="o">%</span> <span class="n">os</span><span class="o">.</span><span class="n">getlogin</span><span class="p">(),</span>
+        <span class="n">subject</span><span class="o">=</span><span class="s">&#39;Envelopes in Celery demo&#39;</span><span class="p">,</span>
+        <span class="n">text_body</span><span class="o">=</span><span class="s">&quot;I&#39;m a helicopter!&quot;</span>
+    <span class="p">)</span>
+    <span class="n">envelope</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s">&#39;localhost&#39;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">1025</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../index.html"
+                        title="previous chapter">Envelopes</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="flask.html"
+                        title="next chapter">Envelopes in Flask example</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/examples/celery.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="flask.html" title="Envelopes in Flask example"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../index.html" title="Envelopes"
+             >previous</a> |</li>
+        <li><a href="../index.html">Envelopes 0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Tomasz Wójcik.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>

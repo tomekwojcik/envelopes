@@ -1,0 +1,154 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Envelopes in Flask example &mdash; Envelopes 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Envelopes 0.1 documentation" href="../index.html" />
+    <link rel="next" title="Envelope class" href="../api/envelope.html" />
+    <link rel="prev" title="Envelopes in Celery example" href="celery.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../api/envelope.html" title="Envelope class"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="celery.html" title="Envelopes in Celery example"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Envelopes 0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="envelopes-in-flask-example">
+<h1>Envelopes in Flask example<a class="headerlink" href="#envelopes-in-flask-example" title="Permalink to this headline">¶</a></h1>
+<p>The following code is an example of using Envelopes in Flask apps.</p>
+<p><strong>NOTE</strong>: Due to Flask&#8217;s threaded nature it&#8217;s important to wrap
+<a class="reference internal" href="../api/conn.html#envelopes.conn.SMTP" title="envelopes.conn.SMTP"><tt class="xref py py-class docutils literal"><span class="pre">envelopes.conn.SMTP</span></tt></a> object in connection stack.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">envelopes</span> <span class="kn">import</span> <span class="n">Envelope</span><span class="p">,</span> <span class="n">SMTP</span>
+<span class="kn">import</span> <span class="nn">envelopes.connstack</span>
+<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">jsonify</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s">&#39;DEBUG&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+
+<span class="n">conn</span> <span class="o">=</span> <span class="n">SMTP</span><span class="p">(</span><span class="s">&#39;127.0.0.1&#39;</span><span class="p">,</span> <span class="mi">1025</span><span class="p">)</span>
+
+
+<span class="nd">@app.before_request</span>
+<span class="k">def</span> <span class="nf">app_before_request</span><span class="p">():</span>
+    <span class="n">envelopes</span><span class="o">.</span><span class="n">connstack</span><span class="o">.</span><span class="n">push_connection</span><span class="p">(</span><span class="n">conn</span><span class="p">)</span>
+
+
+<span class="nd">@app.after_request</span>
+<span class="k">def</span> <span class="nf">app_after_request</span><span class="p">(</span><span class="n">response</span><span class="p">):</span>
+    <span class="n">envelopes</span><span class="o">.</span><span class="n">connstack</span><span class="o">.</span><span class="n">pop_connection</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">response</span>
+
+
+<span class="nd">@app.route</span><span class="p">(</span><span class="s">&#39;/mail&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">post_mail</span><span class="p">():</span>
+    <span class="n">envelope</span> <span class="o">=</span> <span class="n">Envelope</span><span class="p">(</span>
+        <span class="n">from_addr</span><span class="o">=</span><span class="s">&#39;</span><span class="si">%s</span><span class="s">@localhost&#39;</span> <span class="o">%</span> <span class="n">os</span><span class="o">.</span><span class="n">getlogin</span><span class="p">(),</span>
+        <span class="n">to_addr</span><span class="o">=</span><span class="s">&#39;</span><span class="si">%s</span><span class="s">@localhost&#39;</span> <span class="o">%</span> <span class="n">os</span><span class="o">.</span><span class="n">getlogin</span><span class="p">(),</span>
+        <span class="n">subject</span><span class="o">=</span><span class="s">&#39;Envelopes in Flask demo&#39;</span><span class="p">,</span>
+        <span class="n">text_body</span><span class="o">=</span><span class="s">&quot;I&#39;m a helicopter!&quot;</span>
+    <span class="p">)</span>
+
+    <span class="n">smtp</span> <span class="o">=</span> <span class="n">envelopes</span><span class="o">.</span><span class="n">connstack</span><span class="o">.</span><span class="n">get_current_connection</span><span class="p">()</span>
+    <span class="n">smtp</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">envelope</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">jsonify</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="s">&#39;ok&#39;</span><span class="p">))</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="celery.html"
+                        title="previous chapter">Envelopes in Celery example</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../api/envelope.html"
+                        title="next chapter">Envelope class</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/examples/flask.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../api/envelope.html" title="Envelope class"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="celery.html" title="Envelopes in Celery example"
+             >previous</a> |</li>
+        <li><a href="../index.html">Envelopes 0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Tomasz Wójcik.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>

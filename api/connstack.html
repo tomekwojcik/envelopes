@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Connection stack &mdash; Envelopes 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Envelopes 0.1 documentation" href="../index.html" />
+    <link rel="prev" title="SMTP connection" href="conn.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="conn.html" title="SMTP connection"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Envelopes 0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="connection-stack">
+<h1>Connection stack<a class="headerlink" href="#connection-stack" title="Permalink to this headline">¶</a></h1>
+<p>The connection stack allows you to use Envelopes&#8217; SMTP connection wrapper in
+threaded apps. Consult the example Flask to see it in action.</p>
+<p>Code of this module has been adapted from <a class="reference external" href="http://python-rq.org/">RQ</a> by
+<a class="reference external" href="http://nvie.com/about/">Vincent Driessen</a>.</p>
+<dl class="function">
+<dt id="envelopes.connstack.get_current_connection">
+<tt class="descclassname">envelopes.connstack.</tt><tt class="descname">get_current_connection</tt><big>(</big><big>)</big><a class="headerlink" href="#envelopes.connstack.get_current_connection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the current SMTP connection (i.e. the topmost on the
+connection stack).</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="envelopes.connstack.pop_connection">
+<tt class="descclassname">envelopes.connstack.</tt><tt class="descname">pop_connection</tt><big>(</big><big>)</big><a class="headerlink" href="#envelopes.connstack.pop_connection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pops the topmost connection from the stack.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="envelopes.connstack.push_connection">
+<tt class="descclassname">envelopes.connstack.</tt><tt class="descname">push_connection</tt><big>(</big><em>connection</em><big>)</big><a class="headerlink" href="#envelopes.connstack.push_connection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pushes the given connection on the stack.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="envelopes.connstack.resolve_connection">
+<tt class="descclassname">envelopes.connstack.</tt><tt class="descname">resolve_connection</tt><big>(</big><em>connection=None</em><big>)</big><a class="headerlink" href="#envelopes.connstack.resolve_connection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convenience function to resolve the given or the current connection.
+Raises an exception if it cannot resolve a connection now.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="envelopes.connstack.use_connection">
+<tt class="descclassname">envelopes.connstack.</tt><tt class="descname">use_connection</tt><big>(</big><em>connection</em><big>)</big><a class="headerlink" href="#envelopes.connstack.use_connection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clears the stack and uses the given connection.  Protects against mixed
+use of use_connection() and stacked connection contexts.</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="conn.html"
+                        title="previous chapter">SMTP connection</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/api/connstack.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="conn.html" title="SMTP connection"
+             >previous</a> |</li>
+        <li><a href="../index.html">Envelopes 0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Tomasz Wójcik.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>
