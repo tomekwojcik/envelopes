@@ -1,0 +1,6 @@
+include README.rst
+include LICENSE
+recursive-include docs
+recursive-include examples
+recursive-include lib
+recursive-include tests

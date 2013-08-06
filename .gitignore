@@ -1,0 +1,8 @@
+.DS_Store
+*.pyc
+*.pyo
+*.swp
+build/
+dist/
+Envelopes.egg-info/
+MANIFEST
