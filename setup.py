@@ -24,7 +24,7 @@
 import codecs
 from setuptools import setup
 
-version = '0.1'
+version = '0.1.1'
 
 desc_file = codecs.open('README.rst', 'r', 'utf-8')
 long_description = desc_file.read()
