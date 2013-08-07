@@ -2,7 +2,7 @@ Connection stack
 ================
 
 The connection stack allows you to use Envelopes' SMTP connection wrapper in
-threaded apps. Consult the example Flask to see it in action.
+threaded apps. Consult the example Flask app to see it in action.
 
 Code of this module has been adapted from `RQ <http://python-rq.org/>`_ by
 `Vincent Driessen <http://nvie.com/about/>`_.
