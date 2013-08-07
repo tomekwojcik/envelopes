@@ -1,6 +1,9 @@
 Envelopes
 =========
 
+.. image:: https://travis-ci.org/tomekwojcik/envelopes.png?branch=master
+    :target: https://travis-ci.org/tomekwojcik/envelopes
+
 Mailing for human beings.
 
 About
