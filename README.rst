@@ -20,10 +20,8 @@ Short example
     from envelopes import Envelope
 
     envelope = Envelope(
-        from_addr=u'from@example.com',
-        from_name=u'From Example',
-        to_addr=u'to@example.com',
-        to_name=u'To Example',
+        from_addr=(u'from@example.com', u'From Example'),
+        to_addr=(u'to@example.com', u'To Example'),
         subject=u'Envelopes demo',
         text_body=u"I'm a helicopter!"
     )

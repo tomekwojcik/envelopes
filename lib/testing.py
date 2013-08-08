@@ -169,19 +169,17 @@ class BaseTestCase(object):
 
     def _dummy_message(self):
         return dict({
-            'to_addr': 'to@example.com',
-            'to_name': 'Example To',
-            'from_addr': 'from@example.com',
-            'from_name': 'Example From',
+            'to_addr': ('to@example.com', 'Example To'),
+            'from_addr': ('from@example.com', 'Example From'),
             'subject': "I'm a helicopter!",
             'html_body': HTML_BODY,
             'text_body': TEXT_BODY,
-            'cc_addrs': [
+            'cc_addr': [
                 'cc1@example.com',
                 'Example CC2 <cc2@example.com>',
                 ('cc3@example.com', 'Example CC3')
             ],
-            'bcc_addrs': [
+            'bcc_addr': [
                 'bcc1@example.com',
                 'Example BCC2 <bcc2@example.com>',
                 ('bcc3@example.com', 'Example BCC3')

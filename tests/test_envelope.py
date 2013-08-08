@@ -41,8 +41,8 @@ class Test_Envelope(BaseTestCase):
         msg = self._dummy_message()
         envelope = Envelope(**msg)
 
-        assert envelope._to == [msg['to_addr'], msg['to_name']]
-        assert envelope._from == [msg['from_addr'], msg['from_name']]
+        assert envelope._to == [msg['to_addr']]
+        assert envelope._from == msg['from_addr']
         assert envelope._subject == msg['subject']
         assert len(envelope._parts) == 2
 
@@ -56,8 +56,8 @@ class Test_Envelope(BaseTestCase):
         assert html_part[1] == msg['html_body']
         assert html_part[2] == msg['charset']
 
-        assert envelope._cc == msg['cc_addrs']
-        assert envelope._bcc == msg['bcc_addrs']
+        assert envelope._cc == msg['cc_addr']
+        assert envelope._bcc == msg['bcc_addr']
         assert envelope._headers == msg['headers']
         assert envelope._charset == msg['charset']
 
@@ -142,6 +142,25 @@ class Test_Envelope(BaseTestCase):
         assert html_part.get_content_type() == 'text/html'
         assert html_part.get_payload() == msg['html_body']
 
+    def test_to_mime_message_with_many_to_addresses(self):
+        msg = self._dummy_message()
+        msg['to_addr'] = [
+            'to1@example.com',
+            'Example To2 <to2@example.com>',
+            ('to3@example.com', 'Example To3')
+        ]
+        envelope = Envelope(**msg)
+
+        mime_msg = envelope.to_mime_message()
+        assert mime_msg is not None
+
+        to_header = (
+            'to1@example.com,'
+            'Example To2 <to2@example.com>,'
+            'Example To3 <to3@example.com>'
+        )
+        assert mime_msg['To'] == to_header
+
     def test_to_mime_message_with_no_data(self):
         envelope = Envelope()
         mime_msg = envelope.to_mime_message()
@@ -158,17 +177,15 @@ class Test_Envelope(BaseTestCase):
 
     def test_to_mime_message_unicode(self):
         msg = {
-            'to_addr': 'to@example.com',
-            'to_name': u'ęóąśłżźćń',
-            'from_addr': 'from@example.com',
-            'from_name': u'ęóąśłżźćń',
+            'to_addr': ('to@example.com', u'ęóąśłżźćń'),
+            'from_addr': ('from@example.com', u'ęóąśłżźćń'),
             'subject': u'ęóąśłżźćń',
             'html_body': u'ęóąśłżźćń',
             'text_body': u'ęóąśłżźćń',
-            'cc_addrs': [
+            'cc_addr': [
                 ('cc@example.com', u'ęóąśłżźćń')
             ],
-            'bcc_addrs': [
+            'bcc_addr': [
                 ('bcc@example.com', u'ęóąśłżźćń')
             ],
             'headers': {
@@ -218,82 +235,86 @@ class Test_Envelope(BaseTestCase):
         assert len(conn._conn._call_stack.get('sendmail', [])) == 1
 
     def test_to_addr_property(self):
-        envelope = Envelope(**self._dummy_message())
-        assert envelope.to_addr == envelope._to[0]
+        msg = self._dummy_message()
 
-        envelope.to_addr = 'new@example.com'
-        assert envelope.to_addr == 'new@example.com'
+        envelope = Envelope(**msg)
+        assert envelope.to_addr == envelope._to
 
-    def test_to_name_property(self):
-        envelope = Envelope(**self._dummy_message())
-        assert envelope.to_name == envelope._to[1]
+        msg.pop('to_addr')
+        envelope = Envelope(**msg)
+        assert envelope.to_addr == []
 
-        envelope.to_name = 'new@example.com'
-        assert envelope.to_name == 'new@example.com'
+    def test_add_to_addr(self):
+        msg = self._dummy_message()
+        msg.pop('to_addr')
+
+        envelope = Envelope(**msg)
+        envelope.add_to_addr('to2@example.com')
+        assert envelope.to_addr == ['to2@example.com']
+
+    def test_clear_to_addr(self):
+        msg = self._dummy_message()
+
+        envelope = Envelope(**msg)
+        envelope.clear_to_addr()
+        assert envelope.to_addr == []
 
     def test_from_addr_property(self):
         envelope = Envelope(**self._dummy_message())
-        assert envelope.from_addr == envelope._from[0]
+        assert envelope.from_addr == envelope._from
 
         envelope.from_addr = 'new@example.com'
         assert envelope.from_addr == 'new@example.com'
 
-    def test_from_name_property(self):
-        envelope = Envelope(**self._dummy_message())
-        assert envelope.from_name == envelope._from[1]
-
-        envelope.from_name = 'new@example.com'
-        assert envelope.from_name == 'new@example.com'
-
-    def test_cc_property(self):
+    def test_cc_addr_property(self):
         msg = self._dummy_message()
 
         envelope = Envelope(**msg)
-        assert envelope.cc == envelope._cc
+        assert envelope.cc_addr == envelope._cc
 
-        msg.pop('cc_addrs')
+        msg.pop('cc_addr')
         envelope = Envelope(**msg)
-        assert envelope.cc == []
+        assert envelope.cc_addr == []
 
-    def test_add_cc(self):
+    def test_add_cc_addr(self):
         msg = self._dummy_message()
-        msg.pop('cc_addrs')
+        msg.pop('cc_addr')
 
         envelope = Envelope(**msg)
-        envelope.add_cc('cc@example.com')
-        assert envelope.cc == ['cc@example.com']
+        envelope.add_cc_addr('cc@example.com')
+        assert envelope.cc_addr == ['cc@example.com']
 
-    def test_clear_cc(self):
-        msg = self._dummy_message()
-
-        envelope = Envelope(**msg)
-        envelope.clear_cc()
-        assert envelope.cc == []
-
-    def test_bcc_property(self):
+    def test_clear_cc_addr(self):
         msg = self._dummy_message()
 
         envelope = Envelope(**msg)
-        assert envelope.bcc == envelope._bcc
+        envelope.clear_cc_addr()
+        assert envelope.cc_addr == []
 
-        msg.pop('bcc_addrs')
-        envelope = Envelope(**msg)
-        assert envelope.bcc == []
-
-    def test_add_bcc(self):
-        msg = self._dummy_message()
-        msg.pop('bcc_addrs')
-
-        envelope = Envelope(**msg)
-        envelope.add_bcc('bcc@example.com')
-        assert envelope.bcc == ['bcc@example.com']
-
-    def test_clear_bcc(self):
+    def test_bcc_addr_property(self):
         msg = self._dummy_message()
 
         envelope = Envelope(**msg)
-        envelope.clear_bcc()
-        assert envelope.bcc == []
+        assert envelope.bcc_addr == envelope._bcc
+
+        msg.pop('bcc_addr')
+        envelope = Envelope(**msg)
+        assert envelope.bcc_addr == []
+
+    def test_add_bcc_addr(self):
+        msg = self._dummy_message()
+        msg.pop('bcc_addr')
+
+        envelope = Envelope(**msg)
+        envelope.add_bcc_addr('bcc@example.com')
+        assert envelope.bcc_addr == ['bcc@example.com']
+
+    def test_clear_bcc_addr(self):
+        msg = self._dummy_message()
+
+        envelope = Envelope(**msg)
+        envelope.clear_bcc_addr()
+        assert envelope.bcc_addr == []
 
     def test_charset_property(self):
         envelope = Envelope()

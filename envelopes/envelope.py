@@ -48,23 +48,19 @@ class Envelope(object):
     """
     The Envelope class.
 
-    **CC and BCC address formats**
+    **Address formats**
 
-    The following address formats are supported for CC and BCC addresses:
+    The following formats are supported for e-mail addresses:
 
     * ``"user@server.com"`` - just the e-mail address part as a string,
     * ``"Some User <user@server.com>"`` - name and e-mail address parts as a string,
     * ``("user@server.com", "Some User")`` - e-mail address and name parts as a tuple.
 
-    Whenever you come to manipulate either CC or BCC addresses feel free to use
-    any (or all) of the formats above.
+    Whenever you come to manipulate addresses feel free to use any (or all) of
+    the formats above.
 
-    :param to_addr: address part of ``To`` header (e.g. ``to@example.com``)
-    :param to_name: optional name part of ``To`` header (e.g. ``To Example``)
-    :param from_addr: address part of ``From`` header
-        (e.g. ``from@example.com``)
-    :param from_name: optional name part of ``From`` header
-        (e.g. ``From Example``)
+    :param to_addr: ``To`` address or list of ``To`` addresses
+    :param from_addr: ``From`` address
     :param subject: message subject
     :param html_body: optional HTML part of the message
     :param text_body: optional plain text part of the message
@@ -76,11 +72,18 @@ class Envelope(object):
 
     ADDR_FORMAT = '%s <%s>'
 
-    def __init__(self, to_addr=None, to_name=None, from_addr=None,
-                 from_name=None, subject=None, html_body=None, text_body=None,
-                 cc_addrs=None, bcc_addrs=None, headers=None, charset='utf-8'):
-        self._to = [to_addr, to_name]
-        self._from = [from_addr, from_name]
+    def __init__(self, to_addr=None, from_addr=None, subject=None,
+                 html_body=None, text_body=None, cc_addr=None, bcc_addr=None,
+                 headers=None, charset='utf-8'):
+        if to_addr:
+            if isinstance(to_addr, list):
+                self._to = to_addr
+            else:
+                self._to = [to_addr]
+        else:
+            self._to = []
+
+        self._from = from_addr
         self._subject = subject
         self._parts = []
 
@@ -90,13 +93,13 @@ class Envelope(object):
         if html_body:
             self._parts.append(('text/html', html_body, charset))
 
-        if cc_addrs:
-            self._cc = cc_addrs
+        if cc_addr:
+            self._cc = cc_addr
         else:
             self._cc = []
 
-        if bcc_addrs:
-            self._bcc = bcc_addrs
+        if bcc_addr:
+            self._bcc = bcc_addr
         else:
             self._bcc = []
 
@@ -111,63 +114,48 @@ class Envelope(object):
 
     @property
     def to_addr(self):
-        """Address part of the ``To`` address."""
-        return self._to[0]
+        """List of ``To`` addresses."""
+        return self._to
 
-    @to_addr.setter
-    def to_addr(self, to_addr):
-        self._to[0] = to_addr
+    def add_to_addr(self, to_addr):
+        """Adds a ``To`` address."""
+        self._to.append(to_addr)
 
-    @property
-    def to_name(self):
-        """Name part of the ``To`` address."""
-        return self._to[1]
-
-    @to_name.setter
-    def to_name(self, to_name):
-        self._to[1] = to_name
+    def clear_to_addr(self):
+        """Clears list of ``To`` addresses."""
+        self._to = []
 
     @property
     def from_addr(self):
-        """Address part of the ``From`` address."""
-        return self._from[0]
+        return self._from
 
     @from_addr.setter
     def from_addr(self, from_addr):
-        self._from[0] = from_addr
+        self._from = from_addr
 
     @property
-    def from_name(self):
-        """Name part of the ``From`` address."""
-        return self._from[1]
-
-    @from_name.setter
-    def from_name(self, from_name):
-        self._from[1] = from_name
-
-    @property
-    def cc(self):
+    def cc_addr(self):
         """List of CC addresses."""
         return self._cc
 
-    def add_cc(self, cc_addr):
+    def add_cc_addr(self, cc_addr):
         """Adds a CC address."""
         self._cc.append(cc_addr)
 
-    def clear_cc(self):
+    def clear_cc_addr(self):
         """Clears list of CC addresses."""
         self._cc = []
 
     @property
-    def bcc(self):
+    def bcc_addr(self):
         """List of BCC addresses."""
         return self._bcc
 
-    def add_bcc(self, bcc_addr):
+    def add_bcc_addr(self, bcc_addr):
         """Adds a BCC address."""
         self._bcc.append(bcc_addr)
 
-    def clear_bcc(self):
+    def clear_bcc_addr(self):
         """Clears list of BCC addresses."""
         self._bcc = []
 
@@ -239,9 +227,8 @@ class Envelope(object):
         msg = MIMEMultipart('alternative')
         msg['Subject'] = (self._subject or '').encode(self._charset)
 
-        msg['From'] = self._addr_tuple_to_addr(self._from).\
-            encode(self._charset)
-        msg['To'] = self._addr_tuple_to_addr(self._to).encode(self._charset)
+        msg['From'] = self._addrs_to_header([self._from]).encode(self._charset)
+        msg['To'] = self._addrs_to_header(self._to).encode(self._charset)
 
         if self._cc:
             msg['CC'] = self._addrs_to_header(self._cc).encode(self._charset)
