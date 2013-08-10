@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Envelope class &mdash; Envelopes 0.1.1 documentation</title>
+    <title>Envelope class &mdash; Envelopes 0.2 documentation</title>
     
     <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.1.1',
+        VERSION:     '0.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <link rel="top" title="Envelopes 0.1.1 documentation" href="../index.html" />
+    <link rel="top" title="Envelopes 0.2 documentation" href="../index.html" />
     <link rel="next" title="SMTP connection" href="conn.html" />
     <link rel="prev" title="Envelopes in Flask example" href="../examples/flask.html" /> 
   </head>
@@ -40,7 +40,7 @@
         <li class="right" >
           <a href="../examples/flask.html" title="Envelopes in Flask example"
              accesskey="P">previous</a> |</li>
-        <li><a href="../index.html">Envelopes 0.1.1 documentation</a> &raquo;</li> 
+        <li><a href="../index.html">Envelopes 0.2 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -53,28 +53,24 @@
 <h1>Envelope class<a class="headerlink" href="#envelope-class" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="envelopes.envelope.Envelope">
-<em class="property">class </em><tt class="descclassname">envelopes.envelope.</tt><tt class="descname">Envelope</tt><big>(</big><em>to_addr=None</em>, <em>to_name=None</em>, <em>from_addr=None</em>, <em>from_name=None</em>, <em>subject=None</em>, <em>html_body=None</em>, <em>text_body=None</em>, <em>cc_addrs=None</em>, <em>bcc_addrs=None</em>, <em>headers=None</em>, <em>charset='utf-8'</em><big>)</big><a class="headerlink" href="#envelopes.envelope.Envelope" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">envelopes.envelope.</tt><tt class="descname">Envelope</tt><big>(</big><em>to_addr=None</em>, <em>from_addr=None</em>, <em>subject=None</em>, <em>html_body=None</em>, <em>text_body=None</em>, <em>cc_addr=None</em>, <em>bcc_addr=None</em>, <em>headers=None</em>, <em>charset='utf-8'</em><big>)</big><a class="headerlink" href="#envelopes.envelope.Envelope" title="Permalink to this definition">¶</a></dt>
 <dd><p>The Envelope class.</p>
-<p><strong>CC and BCC address formats</strong></p>
-<p>The following address formats are supported for CC and BCC addresses:</p>
+<p><strong>Address formats</strong></p>
+<p>The following formats are supported for e-mail addresses:</p>
 <ul class="simple">
 <li><tt class="docutils literal"><span class="pre">&quot;user&#64;server.com&quot;</span></tt> - just the e-mail address part as a string,</li>
 <li><tt class="docutils literal"><span class="pre">&quot;Some</span> <span class="pre">User</span> <span class="pre">&lt;user&#64;server.com&gt;&quot;</span></tt> - name and e-mail address parts as a string,</li>
 <li><tt class="docutils literal"><span class="pre">(&quot;user&#64;server.com&quot;,</span> <span class="pre">&quot;Some</span> <span class="pre">User&quot;)</span></tt> - e-mail address and name parts as a tuple.</li>
 </ul>
-<p>Whenever you come to manipulate either CC or BCC addresses feel free to use
-any (or all) of the formats above.</p>
+<p>Whenever you come to manipulate addresses feel free to use any (or all) of
+the formats above.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>to_addr</strong> &#8211; address part of <tt class="docutils literal"><span class="pre">To</span></tt> header (e.g. <tt class="docutils literal"><span class="pre">to&#64;example.com</span></tt>)</li>
-<li><strong>to_name</strong> &#8211; optional name part of <tt class="docutils literal"><span class="pre">To</span></tt> header (e.g. <tt class="docutils literal"><span class="pre">To</span> <span class="pre">Example</span></tt>)</li>
-<li><strong>from_addr</strong> &#8211; address part of <tt class="docutils literal"><span class="pre">From</span></tt> header
-(e.g. <tt class="docutils literal"><span class="pre">from&#64;example.com</span></tt>)</li>
-<li><strong>from_name</strong> &#8211; optional name part of <tt class="docutils literal"><span class="pre">From</span></tt> header
-(e.g. <tt class="docutils literal"><span class="pre">From</span> <span class="pre">Example</span></tt>)</li>
+<li><strong>to_addr</strong> &#8211; <tt class="docutils literal"><span class="pre">To</span></tt> address or list of <tt class="docutils literal"><span class="pre">To</span></tt> addresses</li>
+<li><strong>from_addr</strong> &#8211; <tt class="docutils literal"><span class="pre">From</span></tt> address</li>
 <li><strong>subject</strong> &#8211; message subject</li>
 <li><strong>html_body</strong> &#8211; optional HTML part of the message</li>
 <li><strong>text_body</strong> &#8211; optional plain text part of the message</li>
@@ -96,14 +92,14 @@ is guessed then <cite>application/octet-stream</cite> is used.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="envelopes.envelope.Envelope.add_bcc">
-<tt class="descname">add_bcc</tt><big>(</big><em>bcc_addr</em><big>)</big><a class="headerlink" href="#envelopes.envelope.Envelope.add_bcc" title="Permalink to this definition">¶</a></dt>
+<dt id="envelopes.envelope.Envelope.add_bcc_addr">
+<tt class="descname">add_bcc_addr</tt><big>(</big><em>bcc_addr</em><big>)</big><a class="headerlink" href="#envelopes.envelope.Envelope.add_bcc_addr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds a BCC address.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="envelopes.envelope.Envelope.add_cc">
-<tt class="descname">add_cc</tt><big>(</big><em>cc_addr</em><big>)</big><a class="headerlink" href="#envelopes.envelope.Envelope.add_cc" title="Permalink to this definition">¶</a></dt>
+<dt id="envelopes.envelope.Envelope.add_cc_addr">
+<tt class="descname">add_cc_addr</tt><big>(</big><em>cc_addr</em><big>)</big><a class="headerlink" href="#envelopes.envelope.Envelope.add_cc_addr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds a CC address.</p>
 </dd></dl>
 
@@ -113,15 +109,21 @@ is guessed then <cite>application/octet-stream</cite> is used.</p>
 <dd><p>Adds a custom header.</p>
 </dd></dl>
 
+<dl class="method">
+<dt id="envelopes.envelope.Envelope.add_to_addr">
+<tt class="descname">add_to_addr</tt><big>(</big><em>to_addr</em><big>)</big><a class="headerlink" href="#envelopes.envelope.Envelope.add_to_addr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a <tt class="docutils literal"><span class="pre">To</span></tt> address.</p>
+</dd></dl>
+
 <dl class="attribute">
-<dt id="envelopes.envelope.Envelope.bcc">
-<tt class="descname">bcc</tt><a class="headerlink" href="#envelopes.envelope.Envelope.bcc" title="Permalink to this definition">¶</a></dt>
+<dt id="envelopes.envelope.Envelope.bcc_addr">
+<tt class="descname">bcc_addr</tt><a class="headerlink" href="#envelopes.envelope.Envelope.bcc_addr" title="Permalink to this definition">¶</a></dt>
 <dd><p>List of BCC addresses.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="envelopes.envelope.Envelope.cc">
-<tt class="descname">cc</tt><a class="headerlink" href="#envelopes.envelope.Envelope.cc" title="Permalink to this definition">¶</a></dt>
+<dt id="envelopes.envelope.Envelope.cc_addr">
+<tt class="descname">cc_addr</tt><a class="headerlink" href="#envelopes.envelope.Envelope.cc_addr" title="Permalink to this definition">¶</a></dt>
 <dd><p>List of CC addresses.</p>
 </dd></dl>
 
@@ -132,14 +134,14 @@ is guessed then <cite>application/octet-stream</cite> is used.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="envelopes.envelope.Envelope.clear_bcc">
-<tt class="descname">clear_bcc</tt><big>(</big><big>)</big><a class="headerlink" href="#envelopes.envelope.Envelope.clear_bcc" title="Permalink to this definition">¶</a></dt>
+<dt id="envelopes.envelope.Envelope.clear_bcc_addr">
+<tt class="descname">clear_bcc_addr</tt><big>(</big><big>)</big><a class="headerlink" href="#envelopes.envelope.Envelope.clear_bcc_addr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Clears list of BCC addresses.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="envelopes.envelope.Envelope.clear_cc">
-<tt class="descname">clear_cc</tt><big>(</big><big>)</big><a class="headerlink" href="#envelopes.envelope.Envelope.clear_cc" title="Permalink to this definition">¶</a></dt>
+<dt id="envelopes.envelope.Envelope.clear_cc_addr">
+<tt class="descname">clear_cc_addr</tt><big>(</big><big>)</big><a class="headerlink" href="#envelopes.envelope.Envelope.clear_cc_addr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Clears list of CC addresses.</p>
 </dd></dl>
 
@@ -149,16 +151,10 @@ is guessed then <cite>application/octet-stream</cite> is used.</p>
 <dd><p>Clears custom headers.</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="envelopes.envelope.Envelope.from_addr">
-<tt class="descname">from_addr</tt><a class="headerlink" href="#envelopes.envelope.Envelope.from_addr" title="Permalink to this definition">¶</a></dt>
-<dd><p>Address part of the <tt class="docutils literal"><span class="pre">From</span></tt> address.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="envelopes.envelope.Envelope.from_name">
-<tt class="descname">from_name</tt><a class="headerlink" href="#envelopes.envelope.Envelope.from_name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Name part of the <tt class="docutils literal"><span class="pre">From</span></tt> address.</p>
+<dl class="method">
+<dt id="envelopes.envelope.Envelope.clear_to_addr">
+<tt class="descname">clear_to_addr</tt><big>(</big><big>)</big><a class="headerlink" href="#envelopes.envelope.Envelope.clear_to_addr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clears list of <tt class="docutils literal"><span class="pre">To</span></tt> addresses.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -179,7 +175,7 @@ constructor.</p>
 <dl class="attribute">
 <dt id="envelopes.envelope.Envelope.to_addr">
 <tt class="descname">to_addr</tt><a class="headerlink" href="#envelopes.envelope.Envelope.to_addr" title="Permalink to this definition">¶</a></dt>
-<dd><p>Address part of the <tt class="docutils literal"><span class="pre">To</span></tt> address.</p>
+<dd><p>List of <tt class="docutils literal"><span class="pre">To</span></tt> addresses.</p>
 </dd></dl>
 
 <dl class="method">
@@ -187,12 +183,6 @@ constructor.</p>
 <tt class="descname">to_mime_message</tt><big>(</big><big>)</big><a class="headerlink" href="#envelopes.envelope.Envelope.to_mime_message" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the envelope as
 <tt class="xref py py-class docutils literal"><span class="pre">email.mime.multipart.MIMEMultipart</span></tt>.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="envelopes.envelope.Envelope.to_name">
-<tt class="descname">to_name</tt><a class="headerlink" href="#envelopes.envelope.Envelope.to_name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Name part of the <tt class="docutils literal"><span class="pre">To</span></tt> address.</p>
 </dd></dl>
 
 </dd></dl>
@@ -245,7 +235,7 @@ constructor.</p>
         <li class="right" >
           <a href="../examples/flask.html" title="Envelopes in Flask example"
              >previous</a> |</li>
-        <li><a href="../index.html">Envelopes 0.1.1 documentation</a> &raquo;</li> 
+        <li><a href="../index.html">Envelopes 0.2 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">

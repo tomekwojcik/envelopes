@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Envelopes &mdash; Envelopes 0.1.1 documentation</title>
+    <title>Envelopes &mdash; Envelopes 0.2 documentation</title>
     
     <link rel="stylesheet" href="_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.1.1',
+        VERSION:     '0.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="Envelopes 0.1.1 documentation" href="#" />
+    <link rel="top" title="Envelopes 0.2 documentation" href="#" />
     <link rel="next" title="Envelopes in Celery example" href="examples/celery.html" /> 
   </head>
   <body>
@@ -36,7 +36,7 @@
         <li class="right" >
           <a href="examples/celery.html" title="Envelopes in Celery example"
              accesskey="N">next</a> |</li>
-        <li><a href="#">Envelopes 0.1.1 documentation</a> &raquo;</li> 
+        <li><a href="#">Envelopes 0.2 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -58,10 +58,8 @@ make working with outgoing e-mail in Python simple and fun.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">envelopes</span> <span class="kn">import</span> <span class="n">Envelope</span>
 
 <span class="n">envelope</span> <span class="o">=</span> <span class="n">Envelope</span><span class="p">(</span>
-    <span class="n">from_addr</span><span class="o">=</span><span class="s">u&#39;from@example.com&#39;</span><span class="p">,</span>
-    <span class="n">from_name</span><span class="o">=</span><span class="s">u&#39;From Example&#39;</span><span class="p">,</span>
-    <span class="n">to_addr</span><span class="o">=</span><span class="s">u&#39;to@example.com&#39;</span><span class="p">,</span>
-    <span class="n">to_name</span><span class="o">=</span><span class="s">u&#39;To Example&#39;</span><span class="p">,</span>
+    <span class="n">from_addr</span><span class="o">=</span><span class="p">(</span><span class="s">u&#39;from@example.com&#39;</span><span class="p">,</span> <span class="s">u&#39;From Example&#39;</span><span class="p">),</span>
+    <span class="n">to_addr</span><span class="o">=</span><span class="p">(</span><span class="s">u&#39;to@example.com&#39;</span><span class="p">,</span> <span class="s">u&#39;To Example&#39;</span><span class="p">),</span>
     <span class="n">subject</span><span class="o">=</span><span class="s">u&#39;Envelopes demo&#39;</span><span class="p">,</span>
     <span class="n">text_body</span><span class="o">=</span><span class="s">u&quot;I&#39;m a helicopter!&quot;</span>
 <span class="p">)</span>
@@ -187,7 +185,7 @@ GitHub.</p>
         <li class="right" >
           <a href="examples/celery.html" title="Envelopes in Celery example"
              >next</a> |</li>
-        <li><a href="#">Envelopes 0.1.1 documentation</a> &raquo;</li> 
+        <li><a href="#">Envelopes 0.2 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">

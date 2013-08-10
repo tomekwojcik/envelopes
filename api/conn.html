@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>SMTP connection &mdash; Envelopes 0.1.1 documentation</title>
+    <title>SMTP connection &mdash; Envelopes 0.2 documentation</title>
     
     <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.1.1',
+        VERSION:     '0.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <link rel="top" title="Envelopes 0.1.1 documentation" href="../index.html" />
+    <link rel="top" title="Envelopes 0.2 documentation" href="../index.html" />
     <link rel="next" title="Connection stack" href="connstack.html" />
     <link rel="prev" title="Envelope class" href="envelope.html" /> 
   </head>
@@ -40,7 +40,7 @@
         <li class="right" >
           <a href="envelope.html" title="Envelope class"
              accesskey="P">previous</a> |</li>
-        <li><a href="../index.html">Envelopes 0.1.1 documentation</a> &raquo;</li> 
+        <li><a href="../index.html">Envelopes 0.2 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -67,6 +67,55 @@ connected. Otherwise returns <em>False</em></p>
 <tt class="descname">send</tt><big>(</big><em>envelope</em><big>)</big><a class="headerlink" href="#envelopes.conn.SMTP.send" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sends an <em>envelope</em>.</p>
 </dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="envelopes.conn.GMailSMTP">
+<em class="property">class </em><tt class="descclassname">envelopes.conn.</tt><tt class="descname">GMailSMTP</tt><big>(</big><em>login</em>, <em>password</em><big>)</big><a class="headerlink" href="#envelopes.conn.GMailSMTP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subclass of <tt class="xref py py-class docutils literal"><span class="pre">SMTP</span></tt> preconfigured for GMail SMTP.</p>
+<dl class="attribute">
+<dt id="envelopes.conn.GMailSMTP.GMAIL_SMTP_HOST">
+<tt class="descname">GMAIL_SMTP_HOST</tt><em class="property"> = 'smtp.googlemail.com'</em><a class="headerlink" href="#envelopes.conn.GMailSMTP.GMAIL_SMTP_HOST" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="envelopes.conn.GMailSMTP.GMAIL_SMTP_TLS">
+<tt class="descname">GMAIL_SMTP_TLS</tt><em class="property"> = True</em><a class="headerlink" href="#envelopes.conn.GMailSMTP.GMAIL_SMTP_TLS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="envelopes.conn.SendGridSMTP">
+<em class="property">class </em><tt class="descclassname">envelopes.conn.</tt><tt class="descname">SendGridSMTP</tt><big>(</big><em>login</em>, <em>password</em><big>)</big><a class="headerlink" href="#envelopes.conn.SendGridSMTP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subclass of <tt class="xref py py-class docutils literal"><span class="pre">SMTP</span></tt> preconfigured for SendGrid SMTP.</p>
+<dl class="attribute">
+<dt id="envelopes.conn.SendGridSMTP.SENDGRID_SMTP_HOST">
+<tt class="descname">SENDGRID_SMTP_HOST</tt><em class="property"> = 'smtp.sendgrid.net'</em><a class="headerlink" href="#envelopes.conn.SendGridSMTP.SENDGRID_SMTP_HOST" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="envelopes.conn.SendGridSMTP.SENDGRID_SMTP_PORT">
+<tt class="descname">SENDGRID_SMTP_PORT</tt><em class="property"> = 587</em><a class="headerlink" href="#envelopes.conn.SendGridSMTP.SENDGRID_SMTP_PORT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="envelopes.conn.SendGridSMTP.SENDGRID_SMTP_TLS">
+<tt class="descname">SENDGRID_SMTP_TLS</tt><em class="property"> = False</em><a class="headerlink" href="#envelopes.conn.SendGridSMTP.SENDGRID_SMTP_TLS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="envelopes.conn.MailcatcherSMTP">
+<em class="property">class </em><tt class="descclassname">envelopes.conn.</tt><tt class="descname">MailcatcherSMTP</tt><big>(</big><em>port=1025</em><big>)</big><a class="headerlink" href="#envelopes.conn.MailcatcherSMTP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subclass of <tt class="xref py py-class docutils literal"><span class="pre">SMTP</span></tt> preconfigured for local Mailcatcher
+SMTP.</p>
+<dl class="attribute">
+<dt id="envelopes.conn.MailcatcherSMTP.MAILCATCHER_SMTP_HOST">
+<tt class="descname">MAILCATCHER_SMTP_HOST</tt><em class="property"> = 'localhost'</em><a class="headerlink" href="#envelopes.conn.MailcatcherSMTP.MAILCATCHER_SMTP_HOST" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -118,7 +167,7 @@ connected. Otherwise returns <em>False</em></p>
         <li class="right" >
           <a href="envelope.html" title="Envelope class"
              >previous</a> |</li>
-        <li><a href="../index.html">Envelopes 0.1.1 documentation</a> &raquo;</li> 
+        <li><a href="../index.html">Envelopes 0.2 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
