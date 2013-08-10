@@ -1,5 +1,6 @@
 include README.rst
 include LICENSE
+include CHANGES.rst
 recursive-include docs *
 recursive-include examples *
 recursive-include lib *
