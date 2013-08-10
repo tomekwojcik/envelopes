@@ -1,2 +1,2 @@
-from conn import SMTP
+from conn import *
 from envelope import Envelope

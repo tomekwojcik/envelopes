@@ -29,6 +29,8 @@ This module contains SMTP connection wrapper.
 
 import smtplib
 
+__all__ = ['SMTP', 'GMailSMTP', 'SendGridSMTP', 'MailcatcherSMTP']
+
 
 class SMTP(object):
     """Wrapper around :py:class:`smtplib.SMTP` class."""
@@ -74,3 +76,43 @@ class SMTP(object):
 
         msg = envelope.to_mime_message()
         return self._conn.sendmail(msg['From'], msg['To'], msg.as_string())
+
+
+class GMailSMTP(SMTP):
+    """Subclass of :py:class:`SMTP` preconfigured for GMail SMTP."""
+
+    GMAIL_SMTP_HOST = 'smtp.googlemail.com'
+    GMAIL_SMTP_TLS = True
+
+    def __init__(self, login, password):
+        super(GMailSMTP, self).__init__(
+            self.GMAIL_SMTP_HOST, tls=self.GMAIL_SMTP_TLS, login=login,
+            password=password
+        )
+
+
+class SendGridSMTP(SMTP):
+    """Subclass of :py:class:`SMTP` preconfigured for SendGrid SMTP."""
+
+    SENDGRID_SMTP_HOST = 'smtp.sendgrid.net'
+    SENDGRID_SMTP_PORT = 587
+    SENDGRID_SMTP_TLS = False
+
+    def __init__(self, login, password):
+        super(SendGridSMTP, self).__init__(
+            self.SENDGRID_SMTP_HOST, port=self.SENDGRID_SMTP_PORT,
+            tls=self.SENDGRID_SMTP_TLS, login=login,
+            password=password
+        )
+
+
+class MailcatcherSMTP(SMTP):
+    """Subclass of :py:class:`SMTP` preconfigured for local Mailcatcher
+    SMTP."""
+
+    MAILCATCHER_SMTP_HOST = 'localhost'
+
+    def __init__(self, port=1025):
+        super(MailcatcherSMTP, self).__init__(
+            self.MAILCATCHER_SMTP_HOST, port=port
+        )
