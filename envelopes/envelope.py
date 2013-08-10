@@ -27,7 +27,21 @@ envelopes.envelope
 This module contains the Envelope class.
 """
 
-from email import Encoders
+import sys
+
+if sys.version_info[0] == 2:
+    from email import Encoders as email_encoders
+elif sys.version_info[0] == 3:
+    from email import encoders as email_encoders
+    basestring = str
+    
+    def unicode(_str, _charset):
+        return str(_str.encode(_charset), _charset)
+else:
+    raise RuntimeError('Unsupported Python version: %d.%d.%d' % (
+        sys.version_info[0], sys.version_info[1], sys.version_info[2]
+    ))
+
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.application import MIMEApplication
@@ -38,11 +52,11 @@ import mimetypes
 import os
 
 from .conn import SMTP
+from .compat import encoded
 
 
 class MessageEncodeError(Exception):
     pass
-
 
 class Envelope(object):
     """
@@ -214,36 +228,34 @@ class Envelope(object):
         return _header
 
     def _raise(self, exc_class, message):
-        if isinstance(message, unicode):
-            msg = message
-        else:
-            msg = unicode(message, self._charset)
+        raise exc_class(self._encoded(message))
 
-        raise exc_class(msg.encode(self._charset))
+    def _encoded(self, _str):
+        return encoded(_str, self._charset)
 
     def to_mime_message(self):
         """Returns the envelope as
         :py:class:`email.mime.multipart.MIMEMultipart`."""
         msg = MIMEMultipart('alternative')
-        msg['Subject'] = (self._subject or '').encode(self._charset)
+        msg['Subject'] = self._encoded(self._subject or '')
 
-        msg['From'] = self._addrs_to_header([self._from]).encode(self._charset)
-        msg['To'] = self._addrs_to_header(self._to).encode(self._charset)
+        msg['From'] = self._encoded(self._addrs_to_header([self._from]))
+        msg['To'] = self._encoded(self._addrs_to_header(self._to))
 
         if self._cc:
-            msg['CC'] = self._addrs_to_header(self._cc).encode(self._charset)
+            msg['CC'] = self._encoded(self._addrs_to_header(self._cc))
 
         if self._bcc:
-            msg['BCC'] = self._addrs_to_header(self._bcc).encode(self._charset)
+            msg['BCC'] = self._encoded(self._addrs_to_header(self._bcc))
 
         if self._headers:
-            for key, value in self._headers.iteritems():
-                msg[key] = value.encode(self._charset)
+            for key, value in self._headers.items():
+                msg[key] = self._encoded(value)
 
         for part in self._parts:
             type_maj, type_min = part[0].split('/')
             if type_maj == 'text' and type_min in ('html', 'plain'):
-                msg.attach(MIMEText(part[1].encode(self._charset), type_min))
+                msg.attach(MIMEText(part[1], type_min, self._charset))
             else:
                 msg.attach(part[1])
 
@@ -265,9 +277,9 @@ class Envelope(object):
 
             part = MIMEBase(type_maj, type_min)
             part.set_payload(part_data)
-            Encoders.encode_base64(part)
+            email_encoders.encode_base64(part)
 
-            part_filename = os.path.basename(file_path.encode(self._charset))
+            part_filename = os.path.basename(self._encoded(file_path))
             part.add_header('Content-Disposition', 'attachment; filename="%s"'
                             % part_filename)
 

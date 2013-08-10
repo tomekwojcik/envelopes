@@ -1,2 +1,2 @@
-from conn import *
-from envelope import Envelope
+from .conn import *
+from .envelope import Envelope
