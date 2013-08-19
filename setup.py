@@ -24,7 +24,7 @@
 import codecs
 from setuptools import setup
 
-version = '0.2'
+version = '0.3'
 
 desc_file = codecs.open('README.rst', 'r', 'utf-8')
 long_description = desc_file.read()
@@ -50,12 +50,16 @@ setup(
     long_description=long_description,
     license='https://github.com/tomekwojcik/envelopes/blob/master/LICENSE',
     classifiers=[
-        "Development Status :: 3 - Alpha",
+        "Development Status :: 4 - Beta",
         "Environment :: Other Environment",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
-        "Programming Language :: Python",
+        "Programming Language :: Python :: 2",
+        "Programming Language :: Python :: 2.6",
+        "Programming Language :: Python :: 2.7",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.3",
         "Topic :: Software Development :: Libraries :: Python Modules"
     ]
 )
