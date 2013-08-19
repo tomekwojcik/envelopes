@@ -51,11 +51,11 @@ Envelopes allows you to easily:
 Project status
 --------------
 
-This is the first public release of the code. It was extracted from a few minor
-production apps.
+This project should be considered **beta**. Proceed with caution if you decide
+to use Envelopes in production.
 
-Envelopes has been developed and tested with Python 2.7. Tests for other
-versions will follow shortly after the release.
+Envelopes has been developed and tested with Python 2.7. Currently, Envelopes
+supports Python 2.6, 2.7 and 3.3.
 
 Author
 ------

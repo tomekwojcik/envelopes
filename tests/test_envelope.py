@@ -28,8 +28,10 @@ This module contains test suite for the *Envelope* class.
 """
 
 import os
+import sys
 
 from envelopes.envelope import Envelope, MessageEncodeError
+from envelopes.compat import encoded
 from lib.testing import BaseTestCase
 
 
@@ -87,8 +89,8 @@ class Test_Envelope(BaseTestCase):
 
         try:
             header = Envelope()._addrs_to_header([1])
-        except MessageEncodeError, exc:
-            assert exc.message == '1 is not a valid address'
+        except MessageEncodeError as exc:
+            assert exc.args[0] == '1 is not a valid address'
         except:
             raise
         else:
@@ -97,8 +99,8 @@ class Test_Envelope(BaseTestCase):
     def test_raise(self):
         try:
             Envelope()._raise(RuntimeError, u'ęóąśłżźćń')
-        except RuntimeError, exc:
-            assert exc.message == u'ęóąśłżźćń'.encode('utf-8')
+        except RuntimeError as exc:
+            assert exc.args[0] == encoded(u'ęóąśłżźćń', 'utf-8')
         except:
             raise
         else:
@@ -137,10 +139,10 @@ class Test_Envelope(BaseTestCase):
         text_part, html_part = mime_msg_parts[1:]
 
         assert text_part.get_content_type() == 'text/plain'
-        assert text_part.get_payload() == msg['text_body']
+        assert text_part.get_payload(decode=True) == msg['text_body'].encode('utf-8')
 
         assert html_part.get_content_type() == 'text/html'
-        assert html_part.get_payload() == msg['html_body']
+        assert html_part.get_payload(decode=True) == msg['html_body'].encode('utf-8')
 
     def test_to_mime_message_with_many_to_addresses(self):
         msg = self._dummy_message()
@@ -199,28 +201,29 @@ class Test_Envelope(BaseTestCase):
         mime_msg = envelope.to_mime_message()
         assert mime_msg is not None
 
-        assert mime_msg['Subject'] == msg['subject'].encode('utf-8')
-        assert mime_msg['To'] == u'ęóąśłżźćń <to@example.com>'.encode('utf-8')
-        assert mime_msg['From'] == u'ęóąśłżźćń <from@example.com>'.\
-            encode('utf-8')
+        assert mime_msg['Subject'] == encoded(msg['subject'], 'utf-8')
+        assert mime_msg['To'] == encoded(u'ęóąśłżźćń <to@example.com>',
+                                         'utf-8')
+        assert mime_msg['From'] == encoded(u'ęóąśłżźćń <from@example.com>',
+                                           'utf-8')
 
         cc_header = u'ęóąśłżźćń <cc@example.com>'
-        assert mime_msg['CC'] == cc_header.encode('utf-8')
+        assert mime_msg['CC'] == encoded(cc_header, 'utf-8')
 
         bcc_header = u'ęóąśłżźćń <bcc@example.com>'
-        assert mime_msg['BCC'] == bcc_header.encode('utf-8')
+        assert mime_msg['BCC'] == encoded(bcc_header, 'utf-8')
 
-        assert mime_msg['X-Test'] == msg['headers']['X-Test'].encode('utf-8')
+        assert mime_msg['X-Test'] == encoded(msg['headers']['X-Test'], 'utf-8')
 
         mime_msg_parts = [part for part in mime_msg.walk()]
         assert len(mime_msg_parts) == 3
         text_part, html_part = mime_msg_parts[1:]
 
         assert text_part.get_content_type() == 'text/plain'
-        assert text_part.get_payload() == msg['text_body'].encode('utf-8')
+        assert text_part.get_payload(decode=True) == msg['text_body'].encode('utf-8')
 
         assert html_part.get_content_type() == 'text/html'
-        assert html_part.get_payload() == msg['html_body'].encode('utf-8')
+        assert html_part.get_payload(decode=True) == msg['html_body'].encode('utf-8')
 
     def test_send(self):
         envelope = Envelope(
@@ -383,7 +386,7 @@ class Test_Envelope(BaseTestCase):
         assert envelope._parts[5][0] == 'application/octet-stream'
         assert envelope._parts[5][1]['Content-Disposition'] ==\
             'attachment; filename="%s"' %\
-            os.path.basename(_something.encode('utf-8'))
+            os.path.basename(encoded(_something, 'utf-8'))
 
         assert envelope._parts[6][0] == 'application/octet-stream'
         assert envelope._parts[6][1]['Content-Disposition'] ==\
