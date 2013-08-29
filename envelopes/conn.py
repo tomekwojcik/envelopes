@@ -28,20 +28,26 @@ This module contains SMTP connection wrapper.
 """
 
 import smtplib
+import socket
 
-__all__ = ['SMTP', 'GMailSMTP', 'SendGridSMTP', 'MailcatcherSMTP']
+TimeoutException = socket.timeout
+
+__all__ = ['SMTP', 'GMailSMTP', 'SendGridSMTP', 'MailcatcherSMTP',
+           'TimeoutException']
 
 
 class SMTP(object):
     """Wrapper around :py:class:`smtplib.SMTP` class."""
 
-    def __init__(self, host, port=25, login=None, password=None, tls=False):
+    def __init__(self, host, port=25, login=None, password=None, tls=False,
+                 timeout=None):
         self._conn = None
         self._host = host
         self._port = port
         self._login = login
         self._password = password
         self._tls = tls
+        self._timeout = timeout
 
     @property
     def is_connected(self):
@@ -61,7 +67,11 @@ class SMTP(object):
             except (AttributeError, smtplib.SMTPServerDisconnected):
                 pass
 
-            self._conn = smtplib.SMTP(self._host, self._port)
+            if self._timeout:
+                self._conn = smtplib.SMTP(self._host, self._port,
+                                          timeout=self._timeout)
+            else:
+                self._conn = smtplib.SMTP(self._host, self._port)
 
         if self._tls:
             self._conn.starttls()
