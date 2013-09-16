@@ -47,6 +47,17 @@ class Test_SMTPConnection(BaseTestCase):
         assert conn._password == 'eggs'
         assert conn._tls is True
 
+    def test_constructor_all_kwargs(self):
+        conn = SMTP(host='localhost', port=587, login='spam',
+                    password='eggs', tls=True)
+
+        assert conn._conn is None
+        assert conn._host == 'localhost'
+        assert conn._port == 587
+        assert conn._login == 'spam'
+        assert conn._password == 'eggs'
+        assert conn._tls is True
+
     def test_connect(self):
         conn = SMTP('localhost')
         conn._connect()

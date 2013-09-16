@@ -35,7 +35,8 @@ __all__ = ['SMTP', 'GMailSMTP', 'SendGridSMTP', 'MailcatcherSMTP']
 class SMTP(object):
     """Wrapper around :py:class:`smtplib.SMTP` class."""
 
-    def __init__(self, host, port=25, login=None, password=None, tls=False):
+    def __init__(self, host=None,
+                 port=25, login=None, password=None, tls=False):
         self._conn = None
         self._host = host
         self._port = port
@@ -84,7 +85,7 @@ class GMailSMTP(SMTP):
     GMAIL_SMTP_HOST = 'smtp.googlemail.com'
     GMAIL_SMTP_TLS = True
 
-    def __init__(self, login, password):
+    def __init__(self, login=None, password=None):
         super(GMailSMTP, self).__init__(
             self.GMAIL_SMTP_HOST, tls=self.GMAIL_SMTP_TLS, login=login,
             password=password
@@ -98,7 +99,7 @@ class SendGridSMTP(SMTP):
     SENDGRID_SMTP_PORT = 587
     SENDGRID_SMTP_TLS = False
 
-    def __init__(self, login, password):
+    def __init__(self, login=None, password=None):
         super(SendGridSMTP, self).__init__(
             self.SENDGRID_SMTP_HOST, port=self.SENDGRID_SMTP_PORT,
             tls=self.SENDGRID_SMTP_TLS, login=login,
