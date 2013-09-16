@@ -38,7 +38,7 @@ class Test_SMTPConnection(BaseTestCase):
 
     def test_constructor(self):
         conn = SMTP('localhost', port=587, login='spam',
-                    password='eggs', tls=True)
+                    password='eggs', tls=True, timeout=10)
 
         assert conn._conn is None
         assert conn._host == 'localhost'
@@ -46,6 +46,7 @@ class Test_SMTPConnection(BaseTestCase):
         assert conn._login == 'spam'
         assert conn._password == 'eggs'
         assert conn._tls is True
+        assert conn._timeout == 10
 
     def test_connect(self):
         conn = SMTP('localhost')
