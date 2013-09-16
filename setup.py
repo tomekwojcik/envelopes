@@ -24,7 +24,7 @@
 import codecs
 from setuptools import setup
 
-version = '0.3'
+import envelopes
 
 desc_file = codecs.open('README.rst', 'r', 'utf-8')
 long_description = desc_file.read()
@@ -32,7 +32,7 @@ desc_file.close()
 
 setup(
     name="Envelopes",
-    version=version,
+    version=envelopes.__version__,
     packages=['envelopes'],
     test_suite='nose.collector',
     zip_safe=False,
@@ -45,7 +45,8 @@ setup(
     maintainer=u'Tomasz Wójcik'.encode('utf-8'),
     maintainer_email='tomek@bthlabs.pl',
     url='http://tomekwojcik.github.io/envelopes/',
-    download_url='http://github.com/tomekwojcik/envelopes/tarball/v%s' % version,
+    download_url='http://github.com/tomekwojcik/envelopes/tarball/v%s' %\
+        envelopes.__version__,
     description='Mailing for human beings',
     long_description=long_description,
     license='https://github.com/tomekwojcik/envelopes/blob/master/LICENSE',
