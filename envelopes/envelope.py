@@ -42,6 +42,7 @@ else:
         sys.version_info[0], sys.version_info[1], sys.version_info[2]
     ))
 
+from email.header import Header
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.application import MIMEApplication
@@ -50,6 +51,7 @@ from email.mime.image import MIMEImage
 from email.mime.text import MIMEText
 import mimetypes
 import os
+import re
 
 from .conn import SMTP
 from .compat import encoded
@@ -85,6 +87,7 @@ class Envelope(object):
     """
 
     ADDR_FORMAT = '%s <%s>'
+    ADDR_REGEXP = re.compile(r'^(.*) <([^@]+@[^@]+)>$')
 
     def __init__(self, to_addr=None, from_addr=None, subject=None,
                  html_body=None, text_body=None, cc_addr=None, bcc_addr=None,
@@ -189,7 +192,7 @@ class Envelope(object):
 
         if len(addr_tuple) == 2 and addr_tuple[1]:
             addr = self._addr_format % (
-                addr_tuple[1] or '',
+                self._header(addr_tuple[1] or ''),
                 addr_tuple[0] or ''
             )
         elif addr_tuple[0]:
@@ -217,18 +220,39 @@ class Envelope(object):
                 continue
 
             if isinstance(addr, basestring):
-                _addrs.append(addr)
+                if self._is_ascii(addr):
+                    _addrs.append(self._encoded(addr))
+                else:
+                    # these headers need special care when encoding, see:
+                    #   http://tools.ietf.org/html/rfc2047#section-8
+                    # Need to break apart the name from the address if there are
+                    # non-ascii chars
+                    m = self.ADDR_REGEXP.match(addr)
+                    if m:
+                        t = (m.group(2), m.group(1))
+                        _addrs.append(self._addr_tuple_to_addr(t))
+                    else:
+                        # What can we do? Just pass along what the user gave us and hope they did it right
+                        _addrs.append(self._encoded(addr))
             elif isinstance(addr, tuple):
                 _addrs.append(self._addr_tuple_to_addr(addr))
             else:
                 self._raise(MessageEncodeError,
                             '%s is not a valid address' % str(addr))
 
-        _header = unicode(',', self._charset).join(_addrs)
+        _header = ','.join(_addrs)
         return _header
 
     def _raise(self, exc_class, message):
         raise exc_class(self._encoded(message))
+
+    def _header(self, _str):
+        if self._is_ascii(_str):
+            return _str
+        return Header(_str, self._charset).encode()
+
+    def _is_ascii(self, _str):
+        return all(ord(c) < 128 for c in _str)
 
     def _encoded(self, _str):
         return encoded(_str, self._charset)
@@ -237,20 +261,20 @@ class Envelope(object):
         """Returns the envelope as
         :py:class:`email.mime.multipart.MIMEMultipart`."""
         msg = MIMEMultipart('alternative')
-        msg['Subject'] = self._encoded(self._subject or '')
+        msg['Subject'] = self._header(self._subject or '')
 
         msg['From'] = self._encoded(self._addrs_to_header([self._from]))
         msg['To'] = self._encoded(self._addrs_to_header(self._to))
 
         if self._cc:
-            msg['CC'] = self._encoded(self._addrs_to_header(self._cc))
+            msg['CC'] = self._addrs_to_header(self._cc)
 
         if self._bcc:
-            msg['BCC'] = self._encoded(self._addrs_to_header(self._bcc))
+            msg['BCC'] = self._addrs_to_header(self._bcc)
 
         if self._headers:
             for key, value in self._headers.items():
-                msg[key] = self._encoded(value)
+                msg[key] = self._header(value)
 
         for part in self._parts:
             type_maj, type_min = part[0].split('/')

@@ -27,6 +27,7 @@ test_envelope
 This module contains test suite for the *Envelope* class.
 """
 
+from email.header import Header
 import os
 import sys
 
@@ -188,7 +189,7 @@ class Test_Envelope(BaseTestCase):
                 ('cc@example.com', u'ęóąśłżźćń')
             ],
             'bcc_addr': [
-                ('bcc@example.com', u'ęóąśłżźćń')
+                u'ęóąśłżźćń <bcc@example.com>'
             ],
             'headers': {
                 'X-Test': u'ęóąśłżźćń'
@@ -198,22 +199,23 @@ class Test_Envelope(BaseTestCase):
 
         envelope = Envelope(**msg)
 
+        def enc_addr_header(name, email):
+            header = Header(name)
+            header.append(email)
+            return header.encode()
+
         mime_msg = envelope.to_mime_message()
         assert mime_msg is not None
 
-        assert mime_msg['Subject'] == encoded(msg['subject'], 'utf-8')
-        assert mime_msg['To'] == encoded(u'ęóąśłżźćń <to@example.com>',
-                                         'utf-8')
-        assert mime_msg['From'] == encoded(u'ęóąśłżźćń <from@example.com>',
-                                           'utf-8')
+        assert mime_msg['Subject'] == Header(msg['subject'], 'utf-8').encode()
+        assert mime_msg['To'] == enc_addr_header(u'ęóąśłżźćń', '<to@example.com>')
+        assert mime_msg['From'] == enc_addr_header(u'ęóąśłżźćń', '<from@example.com>')
 
-        cc_header = u'ęóąśłżźćń <cc@example.com>'
-        assert mime_msg['CC'] == encoded(cc_header, 'utf-8')
+        assert mime_msg['CC'] == enc_addr_header(u'ęóąśłżźćń', '<cc@example.com>')
 
-        bcc_header = u'ęóąśłżźćń <bcc@example.com>'
-        assert mime_msg['BCC'] == encoded(bcc_header, 'utf-8')
+        assert mime_msg['BCC'] == enc_addr_header(u'ęóąśłżźćń', '<bcc@example.com>')
 
-        assert mime_msg['X-Test'] == encoded(msg['headers']['X-Test'], 'utf-8')
+        assert mime_msg['X-Test'] == Header(msg['headers']['X-Test'], 'utf-8').encode()
 
         mime_msg_parts = [part for part in mime_msg.walk()]
         assert len(mime_msg_parts) == 3
