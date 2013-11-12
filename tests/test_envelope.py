@@ -35,12 +35,6 @@ from envelopes.envelope import Envelope, MessageEncodeError
 from envelopes.compat import encoded
 from lib.testing import BaseTestCase
 
-if sys.version_info[0] == 3:
-    basestring = str
-
-    def unicode(_str, _charset):
-        return str(_str.encode(_charset), _charset)
-
 
 class Test_Envelope(BaseTestCase):
     def setUp(self):
@@ -404,7 +398,7 @@ class Test_Envelope(BaseTestCase):
         msg = self._dummy_message()
         envelope = Envelope(**msg)
 
-        assert unicode(envelope) == (
+        assert envelope.__repr__() == (
             u"""<Envelope from="Example From <from@example.com>" """
             u"""to="Example To <to@example.com>" """
             u"""subject="I'm a helicopter!">"""
