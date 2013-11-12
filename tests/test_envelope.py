@@ -35,6 +35,12 @@ from envelopes.envelope import Envelope, MessageEncodeError
 from envelopes.compat import encoded
 from lib.testing import BaseTestCase
 
+if sys.version_info[0] == 3:
+    basestring = str
+
+    def unicode(_str, _charset):
+        return str(_str.encode(_charset), _charset)
+
 
 class Test_Envelope(BaseTestCase):
     def setUp(self):
