@@ -393,3 +393,13 @@ class Test_Envelope(BaseTestCase):
         assert envelope._parts[6][0] == 'application/octet-stream'
         assert envelope._parts[6][1]['Content-Disposition'] ==\
             'attachment; filename="%s"' % os.path.basename(_octet)
+
+    def test_repr(self):
+        msg = self._dummy_message()
+        envelope = Envelope(**msg)
+
+        assert envelope.__repr__() == (
+            u"""<Envelope from="Example From <from@example.com>" """
+            u"""to="Example To <to@example.com>" """
+            u"""subject="I'm a helicopter!">"""
+        )
