@@ -1,6 +1,17 @@
 Envelopes Changelog
 ===================
 
+Version 0.4
+-----------
+
+Published on 2013-11-10
+
+* Closes `#10 <https://github.com/tomekwojcik/envelopes/issues/10>`_.
+* Closes `#11 <https://github.com/tomekwojcik/envelopes/issues/11>`_.
+* Closes `#12 <https://github.com/tomekwojcik/envelopes/issues/12>`_.
+* Closes `#13 <https://github.com/tomekwojcik/envelopes/issues/13>`_.
+* Closes `#15 <https://github.com/tomekwojcik/envelopes/issues/15>`_.
+
 Version 0.3
 -----------
 
