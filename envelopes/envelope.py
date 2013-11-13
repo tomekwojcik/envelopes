@@ -80,8 +80,8 @@ class Envelope(object):
     :param subject: message subject
     :param html_body: optional HTML part of the message
     :param text_body: optional plain text part of the message
-    :param cc_addrs: optional list of CC address
-    :param bcc_addrs: optional list of BCC address
+    :param cc_addr: optional single CC address or list of CC addresses
+    :param bcc_addr: optional single BCC address or list of BCC addresses
     :param headers: optional dictionary of headers
     :param charset: message charset
     """
@@ -111,12 +111,18 @@ class Envelope(object):
             self._parts.append(('text/html', html_body, charset))
 
         if cc_addr:
-            self._cc = cc_addr
+            if isinstance(cc_addr, list):
+                self._cc = cc_addr
+            else:
+                self._cc = [cc_addr]
         else:
             self._cc = []
 
         if bcc_addr:
-            self._bcc = bcc_addr
+            if isinstance(bcc_addr, list):
+                self._bcc = bcc_addr
+            else:
+                self._bcc = [bcc_addr]
         else:
             self._bcc = []
 
@@ -275,9 +281,6 @@ class Envelope(object):
 
         if self._cc:
             msg['CC'] = self._addrs_to_header(self._cc)
-
-        if self._bcc:
-            msg['BCC'] = self._addrs_to_header(self._bcc)
 
         if self._headers:
             for key, value in self._headers.items():
