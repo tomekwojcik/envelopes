@@ -13,3 +13,4 @@ Patches and Suggestions
 * `Ram Rachum <https://github.com/cool-RR>`_
 * `Wade Simmons <https://github.com/wadey>`_
 * `Adam Canady <https://github.com/AdamCanady>`_
+* `Mark Lewandowski <https://github.com/mlew>`_
