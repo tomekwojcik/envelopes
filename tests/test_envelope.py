@@ -124,13 +124,7 @@ class Test_Envelope(BaseTestCase):
             'Example CC3 <cc3@example.com>'
         )
         assert mime_msg['CC'] == cc_header
-
-        bcc_header = (
-            'bcc1@example.com,'
-            'Example BCC2 <bcc2@example.com>,'
-            'Example BCC3 <bcc3@example.com>'
-        )
-        assert mime_msg['BCC'] == bcc_header
+        assert 'BCC' not in mime_msg
 
         assert mime_msg['Reply-To'] == msg['headers']['Reply-To']
         assert mime_msg['X-Mailer'] == msg['headers']['X-Mailer']
@@ -213,7 +207,7 @@ class Test_Envelope(BaseTestCase):
 
         assert mime_msg['CC'] == enc_addr_header(u'ęóąśłżźćń', '<cc@example.com>')
 
-        assert mime_msg['BCC'] == enc_addr_header(u'ęóąśłżźćń', '<bcc@example.com>')
+        assert 'BCC' not in mime_msg
 
         assert mime_msg['X-Test'] == Header(msg['headers']['X-Test'], 'utf-8').encode()
 

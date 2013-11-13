@@ -137,5 +137,5 @@ class Test_SMTPConnection(BaseTestCase):
         call_args = conn._conn._call_stack['sendmail'][0][0]
         assert len(call_args) == 3
         assert call_args[0] == mime_msg['From']
-        assert call_args[1] == mime_msg['To']
+        assert call_args[1] == [envelope._addrs_to_header([addr]) for addr in envelope._to + envelope._cc + envelope._bcc]
         assert call_args[2] != ''
