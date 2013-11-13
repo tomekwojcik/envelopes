@@ -11,6 +11,7 @@ Published on 2013-11-10
 * Closes `#12 <https://github.com/tomekwojcik/envelopes/issues/12>`_.
 * Closes `#13 <https://github.com/tomekwojcik/envelopes/issues/13>`_.
 * Closes `#15 <https://github.com/tomekwojcik/envelopes/issues/15>`_.
+* Closes `#16 <https://github.com/tomekwojcik/envelopes/issues/15>`_.
 
 Version 0.3
 -----------
