@@ -1,4 +1,4 @@
-inlucde AUTHORS.rst
+include AUTHORS.rst
 include README.rst
 include LICENSE
 include CHANGES.rst
